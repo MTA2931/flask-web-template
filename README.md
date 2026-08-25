@@ -81,8 +81,8 @@
 ### 1️⃣ دریافت پروژه
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-cd YOUR-REPOSITORY
+git clone https://github.com/mta-company-dev/flask-web-template.git
+cd flask-web-template
 ```
 
 ### 2️⃣ ساخت Virtual Environment
@@ -291,7 +291,7 @@ gunicorn app:app
 برای مشارکت:
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+git clone https://github.com/mta-company-dev/flask-web-template.git
 ```
 
 یک Branch جدید ایجاد کنید:
@@ -365,6 +365,7 @@ git commit -m "Add new feature"
 
 <div align="center">
 
+### Developed by MTA Company
 ### 🧩 Built with Python & Flask
 
 **Open Source • Free • Customizable • Persian RTL**
