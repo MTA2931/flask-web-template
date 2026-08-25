@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}صفحه یافت نشد - 404 | {{ site_name }}{% endblock %}
+{% block meta_description %}صفحه مورد نظر یافت نشد. به صفحه اصلی بازگردید.{% endblock %}
+{% block meta_keywords %}404, صفحه یافت نشد{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<section class="error404">
+
+    <div class="error-number">
+        404
+    </div>
+
+    <div class="error404-container">
+
+        <div class="error404-animation">
+            <lottie-player
+                src="https://assets10.lottiefiles.com/packages/lf20_kcsr6fcp.json"
+                background="transparent"
+                speed="1"
+                loop
+                autoplay>
+            </lottie-player>
+        </div>
+
+        <div class="error404-content">
+
+            <h1>
+                اوه...
+                <span>صفحه پیدا نشد</span>
+            </h1>
+
+            <p>
+                صفحه‌ای که به دنبال آن هستید وجود ندارد،
+                ممکن است حذف شده باشد یا آدرس وارد شده اشتباه باشد.
+                برای ادامه، به صفحه اصلی بازگردید.
+            </p>
+
+            <a href="{{ url_for('public.index') }}" class="btn">
+                <i class="fa-solid fa-house"></i>
+                بازگشت به صفحه اصلی
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="error404-footer">
+        نام وبسایت | B-Front
+    </div>
+
+</section>
+
+{% endblock %}

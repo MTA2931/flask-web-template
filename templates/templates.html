@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}قالب‌های HTML/CSS/JS - دانلود رایگان | {{ site_name }}{% endblock %}
+{% block meta_description %}مجموعه کامل قالب‌های آماده HTML، CSS و JavaScript. فیلتر بر اساس دسته‌بندی، جستجو و دانلود رایگان قالب‌های ریسپانسیو و مدرن.{% endblock %}
+{% block meta_keywords %}دانلود قالب HTML, قالب CSS رایگان, قالب JavaScript, قالب لندینگ پیج, قالب پورتفolio, قالب فروشگاهی{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="animate-slide-up">قالب‌های <span class="gradient-text">آماده</span></h1>
+        <p class="animate-slide-up delay-1">بهترین قالب‌های HTML، CSS و JavaScript را انتخاب و دانلود کنید</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="filters animate-fade-in">
+            <form action="{{ url_for('public.templates_page') }}" method="GET" class="search-form">
+                <input type="text" name="q" value="{{ search }}" placeholder="جستجوی قالب..." aria-label="جستجو">
+                <button type="submit" class="btn btn-primary">جستجو</button>
+            </form>
+            <div class="category-filters">
+                <a href="{{ url_for('public.templates_page') }}" class="filter-chip {% if not current_category %}active{% endif %}">همه</a>
+                {% for cat in categories %}
+                <a href="{{ url_for('public.templates_page', category=cat) }}" class="filter-chip {% if current_category == cat %}active{% endif %}">{{ cat }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="templates-grid">
+            {% for template in templates %}
+            {% include "partials/template_card.html" %}
+            {% else %}
+            <div class="empty-state full-width">
+                <div class="empty-icon">🔍</div>
+                <h3>قالبی یافت نشد</h3>
+                <p>فیلترها را تغییر دهید یا بعداً مراجعه کنید.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

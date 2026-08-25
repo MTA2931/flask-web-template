@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}پشتیبانی و تماس با ما | {{ site_name }}{% endblock %}
+{% block meta_description %}پشتیبانی نام وبسایت - ثبت تیکت، تماس تلفنی {{ support_phone }} و ایمیل {{ support_email }}. پاسخگویی سریع به سوالات شما.{% endblock %}
+{% block meta_keywords %}پشتیبانی نام وبسایت, تماس با ما, تیکت پشتیبانی, سوالات فنی, help desk{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="animate-slide-up">پشتیبانی <span class="gradient-text">و تماس</span></h1>
+        <p class="animate-slide-up delay-1">ما همیشه آماده پاسخگویی به سوالات شما هستیم</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="support-grid">
+            <div class="contact-cards animate-fade-in">
+                <div class="contact-card">
+                    <div class="contact-icon">📞</div>
+                    <h3>تماس تلفنی</h3>
+                    <p dir="ltr">{{ support_phone }}</p>
+                    <span class="contact-hint">شنبه تا پنجشنبه، ۹ تا ۱۸</span>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">✉️</div>
+                    <h3>ایمیل</h3>
+                    <p dir="ltr">{{ support_email }}</p>
+                    <span class="contact-hint">پاسخ در کمتر از ۲۴ ساعت</span>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">📍</div>
+                    <h3>آدرس</h3>
+                    <p>{{ support_address }}</p>
+                </div>
+            </div>
+
+            <div class="ticket-form-wrapper animate-fade-in delay-1">
+                <h2>ثبت تیکت پشتیبانی</h2>
+                <p>فرم زیر را پر کنید تا در اسرع وقت پاسخ دهیم.</p>
+                <form action="{{ url_for('public.support') }}" method="POST" class="ticket-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">نام و نام خانوادگی *</label>
+                            <input type="text" id="name" name="name" required placeholder="نام شما">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">ایمیل *</label>
+                            <input type="email" id="email" name="email" required placeholder="example@email.com" dir="ltr">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">شماره تماس</label>
+                        <input type="tel" id="phone" name="phone" placeholder="09123456789" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">موضوع *</label>
+                        <input type="text" id="subject" name="subject" required placeholder="موضوع تیکت">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">پیام *</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="پیام خود را بنویسید..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">ارسال تیکت</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

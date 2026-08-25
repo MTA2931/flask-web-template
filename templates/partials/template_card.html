@@ -1,0 +1,24 @@
+<article class="template-card animate-fade-in">
+    <a href="{{ url_for('public.template_detail', slug=template.slug) }}" class="template-card-link">
+        <div class="template-image">
+            <img src="{{ url_for('static', filename='uploads/images/' + template.image_filename) }}"
+                 alt="قالب {{ template.name }} - {{ template.category }}"
+                 loading="lazy"
+                 width="400" height="250">
+            <div class="template-overlay">
+                <span class="btn btn-sm btn-white">مشاهده جزئیات</span>
+            </div>
+            {% if template.is_featured %}
+            <span class="template-badge">ویژه</span>
+            {% endif %}
+        </div>
+        <div class="template-info">
+            <span class="template-category">{{ template.category }}</span>
+            <h3>{{ template.name }}</h3>
+            <p>{{ template.short_description or template.description[:100] }}...</p>
+            <div class="template-meta">
+                <span>⬇ {{ template.download_count }} دانلود</span>
+            </div>
+        </div>
+    </a>
+</article>

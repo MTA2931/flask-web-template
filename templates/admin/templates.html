@@ -1,0 +1,222 @@
+{% extends "admin/base.html" %}
+
+{% block title %}مدیریت قالب‌ها{% endblock %}
+
+{% block content %}
+<div class="page-header-row">
+    <h1 class="page-title">مدیریت قالب‌ها</h1>
+    <button class="btn btn-primary" onclick="openModal('addTemplateModal')">+ افزودن قالب</button>
+</div>
+
+<div class="admin-card">
+    <table class="admin-table admin-table-full">
+        <thead>
+            <tr>
+                <th>تصویر</th>
+                <th>نام</th>
+                <th>دسته</th>
+                <th>دانلود</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in templates %}
+            <tr>
+                <td>
+                    <img src="{{ url_for('static', filename='uploads/images/' + t.image_filename) }}"
+                         alt="{{ t.name }}" class="table-thumb">
+                </td>
+                <td>{{ t.name }}</td>
+                <td>{{ t.category }}</td>
+                <td>{{ t.download_count }}</td>
+                <td>
+                    {% if t.is_active %}
+                    <span class="badge badge-success">فعال</span>
+                    {% else %}
+                    <span class="badge badge-danger">غیرفعال</span>
+                    {% endif %}
+                    {% if t.is_featured %}
+                    <span class="badge badge-info">ویژه</span>
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    <button class="btn btn-sm btn-outline edit-template-btn"
+                            data-id="{{ t.id }}"
+                            data-name="{{ t.name }}"
+                            data-category="{{ t.category }}"
+                            data-short-description="{{ t.short_description or '' }}"
+                            data-description="{{ t.description }}"
+                            data-tags="{{ t.tags or '' }}"
+                            data-meta-title="{{ t.meta_title or '' }}"
+                            data-meta-keywords="{{ t.meta_keywords or '' }}"
+                            data-meta-description="{{ t.meta_description or '' }}"
+                            data-is-featured="{{ 'true' if t.is_featured else 'false' }}"
+                            data-is-active="{{ 'true' if t.is_active else 'false' }}">ویرایش</button>
+                    <form action="{{ url_for('admin.template_delete', template_id=t.id) }}" method="POST" class="inline-form" onsubmit="return confirm('آیا مطمئن هستید؟')">
+                        <button type="submit" class="btn btn-sm btn-danger delete-template-btn">حذف</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="text-center">قالبی ثبت نشده است.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Modal -->
+<div class="modal" id="addTemplateModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>افزودن قالب جدید</h2>
+            <button class="modal-close" onclick="closeModal('addTemplateModal')">&times;</button>
+        </div>
+        <form action="{{ url_for('admin.template_add') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>نام قالب *</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>دسته‌بندی</label>
+                    <input type="text" name="category" value="عمومی">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>توضیحات کوتاه</label>
+                <input type="text" name="short_description" maxlength="300">
+            </div>
+            <div class="form-group">
+                <label>توضیحات کامل *</label>
+                <textarea name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>تگ‌ها (با کاما جدا کنید)</label>
+                <input type="text" name="tags" placeholder="HTML, CSS, Landing Page">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>تصویر پیش‌نمایش *</label>
+                    <input type="file" name="image" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label>فایل ZIP *</label>
+                    <input type="file" name="zip_file" accept=".zip" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Meta Title (SEO)</label>
+                    <input type="text" name="meta_title">
+                </div>
+                <div class="form-group">
+                    <label>Meta Keywords</label>
+                    <input type="text" name="meta_keywords">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Meta Description (SEO)</label>
+                <textarea name="meta_description" rows="2"></textarea>
+            </div>
+            <label class="checkbox-label">
+                <input type="checkbox" name="is_featured"> قالب ویژه
+            </label>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('addTemplateModal')">انصراف</button>
+                <button type="submit" class="btn btn-primary">ذخیره</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal" id="editTemplateModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>ویرایش قالب</h2>
+            <button class="modal-close" onclick="closeModal('editTemplateModal')">&times;</button>
+        </div>
+        <form id="editForm" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>نام قالب *</label>
+                    <input type="text" name="name" id="edit_name" required>
+                </div>
+                <div class="form-group">
+                    <label>دسته‌بندی</label>
+                    <input type="text" name="category" id="edit_category">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>توضیحات کوتاه</label>
+                <input type="text" name="short_description" id="edit_short_description">
+            </div>
+            <div class="form-group">
+                <label>توضیحات کامل *</label>
+                <textarea name="description" id="edit_description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>تگ‌ها</label>
+                <input type="text" name="tags" id="edit_tags">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>تصویر جدید (اختیاری)</label>
+                    <input type="file" name="image" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>فایل ZIP جدید (اختیاری)</label>
+                    <input type="file" name="zip_file" accept=".zip">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Meta Title</label>
+                    <input type="text" name="meta_title" id="edit_meta_title">
+                </div>
+                <div class="form-group">
+                    <label>Meta Keywords</label>
+                    <input type="text" name="meta_keywords" id="edit_meta_keywords">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Meta Description</label>
+                <textarea name="meta_description" id="edit_meta_description" rows="2"></textarea>
+            </div>
+            <label class="checkbox-label">
+                <input type="checkbox" name="is_featured" id="edit_is_featured"> قالب ویژه
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="is_active" id="edit_is_active"> فعال
+            </label>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('editTemplateModal')">انصراف</button>
+                <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.edit-template-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        document.getElementById('editForm').action = '/admin/templates/' + id + '/edit';
+        document.getElementById('edit_name').value = btn.dataset.name;
+        document.getElementById('edit_category').value = btn.dataset.category;
+        document.getElementById('edit_short_description').value = btn.dataset.shortDescription;
+        document.getElementById('edit_description').value = btn.dataset.description;
+        document.getElementById('edit_tags').value = btn.dataset.tags;
+        document.getElementById('edit_meta_title').value = btn.dataset.metaTitle;
+        document.getElementById('edit_meta_keywords').value = btn.dataset.metaKeywords;
+        document.getElementById('edit_meta_description').value = btn.dataset.metaDescription;
+        document.getElementById('edit_is_featured').checked = btn.dataset.isFeatured === 'true';
+        document.getElementById('edit_is_active').checked = btn.dataset.isActive === 'true';
+        openModal('editTemplateModal');
+    });
+});
+</script>
+{% endblock %}

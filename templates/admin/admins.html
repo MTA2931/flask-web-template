@@ -1,0 +1,87 @@
+{% extends "admin/base.html" %}
+
+{% block title %}مدیریت ادمین‌ها{% endblock %}
+
+{% block content %}
+<div class="page-header-row">
+    <h1 class="page-title">مدیریت ادمین‌ها</h1>
+    <button class="btn btn-primary" onclick="openModal('addAdminModal')">+ افزودن ادمین</button>
+</div>
+
+<div class="admin-card">
+    <table class="admin-table admin-table-full">
+        <thead>
+            <tr>
+                <th>نام</th>
+                <th>نام کاربری</th>
+                <th>ایمیل</th>
+                <th>نقش</th>
+                <th>آخرین ورود</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in admins %}
+            <tr>
+                <td>{{ a.full_name }}</td>
+                <td>{{ a.username }}</td>
+                <td dir="ltr">{{ a.email }}</td>
+                <td>
+                    {% if a.is_superadmin %}
+                    <span class="badge badge-info">سوپر ادمین</span>
+                    {% else %}
+                    <span class="badge badge-success">ادمین</span>
+                    {% endif %}
+                </td>
+                <td>{{ a.last_login.strftime('%Y/%m/%d %H:%M') if a.last_login else 'هرگز' }}</td>
+                <td>
+                    {% if a.id != session.get('admin_id') %}
+                    <form action="{{ url_for('admin.admin_delete', admin_id=a.id) }}" method="POST" class="inline-form" onsubmit="return confirm('حذف این ادمین؟')">
+                        <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                    </form>
+                    {% else %}
+                    <span class="text-muted">شما</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal" id="addAdminModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>افزودن ادمین جدید</h2>
+            <button class="modal-close" onclick="closeModal('addAdminModal')">&times;</button>
+        </div>
+        <form action="{{ url_for('admin.admin_add') }}" method="POST">
+            <div class="form-group">
+                <label>نام کامل *</label>
+                <input type="text" name="full_name" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>نام کاربری *</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>ایمیل *</label>
+                    <input type="email" name="email" required dir="ltr">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>رمز عبور *</label>
+                <input type="password" name="password" required>
+            </div>
+            <label class="checkbox-label">
+                <input type="checkbox" name="is_superadmin"> سوپر ادمین
+            </label>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('addAdminModal')">انصراف</button>
+                <button type="submit" class="btn btn-primary">ذخیره</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

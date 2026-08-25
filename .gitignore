@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+instance/
+*.db
+venv/
+.venv/
+static/uploads/templates/*
+static/uploads/images/*
+!static/uploads/templates/.gitkeep
+!static/uploads/images/.gitkeep
+.DS_Store
+Thumbs.db

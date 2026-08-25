@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}نام وبسایت - دانلود رایگان قالب HTML/CSS/JS | بهترین قالب‌های فرانت‌اند{% endblock %}
+{% block meta_description %}نام وبسایت مرجع تخصصی دانلود قالب‌های آماده HTML، CSS و JavaScript. بیش از {{ total_templates }} قالب ریسپانسیو و مدرن برای طراحی وب سایت.{% endblock %}
+{% block meta_keywords %}قالب HTML, قالب CSS, قالب JavaScript, دانلود قالب رایگان, قالب وب فارسی, front-end template, نام وبسایت, قالب ریسپانسیو{% endblock %}
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"CollectionPage",
+ "name":"قالب‌های HTML CSS JS نام وبسایت",
+ "description":"مجموعه قالب‌های آماده فرانت‌اند رایگان",
+ "url":"{{ request.url }}",
+ "mainEntity":{
+   "@type":"ItemList",
+   "numberOfItems":"{{ total_templates }}"
+ }
+}
+</script>
+
+{% block content %}
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-content">
+        <div class="hero-text animate-slide-up">
+            <span class="hero-badge">مرجع قالب‌های فرانت‌اند</span>
+            <h1>قالب‌های آماده <span class="gradient-text">HTML / CSS / JS</span></h1>
+            <p>بهترین قالب‌های وب را رایگان دانلود کنید. طراحی مدرن، کد تمیز و کاملاً ریسپانسیو.</p>
+            <div class="hero-actions">
+                <a href="{{ url_for('public.templates_page') }}" class="btn btn-primary btn-lg">مشاهده قالب‌ها</a>
+                <a href="{{ url_for('public.about') }}" class="btn btn-outline btn-lg">درباره ما</a>
+            </div>
+        </div>
+        <div class="hero-stats animate-slide-up delay-1">
+            <div class="stat-card">
+                <span class="stat-number" data-count="{{ total_templates }}">0</span>
+                <span class="stat-label">قالب</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" data-count="{{ total_downloads }}">0</span>
+                <span class="stat-label">دانلود</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" data-count="100">0</span>
+                <span class="stat-label">% رایگان</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-header animate-fade-in">
+            <h2>قالب‌های <span class="gradient-text">ویژه</span></h2>
+            <p>برترین قالب‌های انتخاب شده توسط تیم نام وبسایت</p>
+        </div>
+        <div class="templates-grid">
+            {% for template in featured %}
+            {% include "partials/template_card.html" %}
+            {% else %}
+            <div class="empty-state">
+                <p>هنوز قالب ویژه‌ای ثبت نشده است.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-header animate-fade-in">
+            <h2>جدیدترین <span class="gradient-text">قالب‌ها</span></h2>
+            <p>آخرین قالب‌های اضافه شده به مجموعه</p>
+        </div>
+        <div class="templates-grid">
+            {% for template in latest %}
+            {% include "partials/template_card.html" %}
+            {% else %}
+            <div class="empty-state">
+                <p>به زودی قالب‌های جدید اضافه می‌شوند.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('public.templates_page') }}" class="btn btn-primary">مشاهده همه قالب‌ها</a>
+        </div>
+    </div>
+</section>
+
+<section class="section features-section">
+    <div class="container">
+        <div class="section-header animate-fade-in">
+            <h2>چرا <span class="gradient-text">نام وبسایت</span>؟</h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card animate-fade-in">
+                <div class="feature-icon">⚡</div>
+                <h3>دانلود سریع</h3>
+                <p>فایل ZIP آماده با یک کلیک دانلود کنید</p>
+            </div>
+            <div class="feature-card animate-fade-in delay-1">
+                <div class="feature-icon">📱</div>
+                <h3>ریسپانسیو</h3>
+                <p>تمام قالب‌ها برای موبایل و تبلت بهینه شده</p>
+            </div>
+            <div class="feature-card animate-fade-in delay-2">
+                <div class="feature-icon">🎨</div>
+                <h3>طراحی مدرن</h3>
+                <p>UI/UX حرفه‌ای با آخرین استانداردهای طراحی</p>
+            </div>
+            <div class="feature-card animate-fade-in delay-3">
+                <div class="feature-icon">💯</div>
+                <h3>کاملاً رایگان</h3>
+                <p>بدون هزینه، بدون محدودیت دانلود</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container cta-content animate-fade-in">
+        <h2>آماده شروع هستید؟</h2>
+        <p>همین الان قالب مورد نظرتان را پیدا کنید و پروژه خود را شروع کنید</p>
+        <a href="{{ url_for('public.templates_page') }}" class="btn btn-white btn-lg">شروع کنید</a>
+    </div>
+</section>
+{% endblock %}

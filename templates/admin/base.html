@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{% block title %}پنل مدیریت{% endblock %} | {{ site_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="admin-body">
+    {% if session.get('admin_id') %}
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">&lt;/&gt;</span>
+            <span>نام وبسایت</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('admin.dashboard') }}" class="sidebar-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+                <span>📊</span> داشبورد
+            </a>
+            <a href="{{ url_for('admin.templates_list') }}" class="sidebar-link {% if request.endpoint == 'admin.templates_list' %}active{% endif %}">
+                <span>📁</span> قالب‌ها
+            </a>
+            <a href="{{ url_for('admin.downloads_list') }}" class="sidebar-link {% if request.endpoint == 'admin.downloads_list' %}active{% endif %}">
+                <span>⬇</span> دانلودها
+            </a>
+            {% if session.get('is_superadmin') %}
+            <a href="{{ url_for('admin.admins_list') }}" class="sidebar-link {% if request.endpoint == 'admin.admins_list' %}active{% endif %}">
+                <span>👤</span> ادمین‌ها
+            </a>
+            {% endif %}
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('public.index') }}" class="sidebar-link" target="_blank">
+                <span>🌐</span> مشاهده سایت
+            </a>
+            <a href="{{ url_for('admin.logout') }}" class="sidebar-link logout">
+                <span>🚪</span> خروج
+            </a>
+        </div>
+    </aside>
+    <div class="admin-main">
+        <header class="admin-header">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+            <span class="admin-user">👤 {{ session.get('admin_name', 'ادمین') }}</span>
+        </header>
+        <div class="admin-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    {% else %}
+    {% block login_content %}{% endblock %}
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

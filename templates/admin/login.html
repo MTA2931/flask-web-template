@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+
+{% block title %}ورود{% endblock %}
+
+{% block login_content %}
+<div class="login-page">
+    <div class="login-card animate-fade-in">
+        <div class="login-header">
+            <span class="logo-icon">&lt;/&gt;</span>
+            <h1>ورود به پنل مدیریت</h1>
+            <p>نام وبسایت</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('admin.login') }}" method="POST" class="login-form">
+            <div class="form-group">
+                <label for="username">نام کاربری</label>
+                <input type="text" id="username" name="username" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">رمز عبور</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">ورود</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

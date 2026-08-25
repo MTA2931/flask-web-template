@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}{{ template.meta_title or template.name }} - دانلود قالب | {{ site_name }}{% endblock %}
+{% block meta_description %}{{ template.meta_description or template.short_description or template.description[:160] }}{% endblock %}
+{% block meta_keywords %}{{ template.meta_keywords or template.tags }}, قالب HTML, دانلود قالب, {{ template.category }}{% endblock %}
+{% block og_image %}<meta property="og:image" content="{{ site_url }}/static/uploads/images/{{ template.image_filename }}">{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "{{ template.name }}",
+    "description": "{{ template.short_description or template.description[:200] }}",
+    "applicationCategory": "WebApplication",
+    "operatingSystem": "Web",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "IRR"
+    },
+    "downloadUrl": "{{ site_url }}/download/{{ template.slug }}"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-header page-header-sm">
+    <div class="container">
+        <nav class="breadcrumb" aria-label="مسیر">
+            <a href="{{ url_for('public.index') }}">صفحه اصلی</a>
+            <span>/</span>
+            <a href="{{ url_for('public.templates_page') }}">قالب‌ها</a>
+            <span>/</span>
+            <span>{{ template.name }}</span>
+        </nav>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="template-detail animate-fade-in">
+            <div class="template-detail-image">
+                <img src="{{ url_for('static', filename='uploads/images/' + template.image_filename) }}"
+                     alt="پیش‌نمایش قالب {{ template.name }}"
+                     width="800" height="500">
+            </div>
+            <div class="template-detail-info">
+                <span class="template-category">{{ template.category }}</span>
+                <h1>{{ template.name }}</h1>
+                <p class="template-desc">{{ template.description }}</p>
+
+                {% if template.tags %}
+                <div class="template-tags">
+                    {% for tag in template.tags.split(',') %}
+                    <span class="tag">{{ tag.strip() }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="template-stats">
+                    <div class="stat">
+                        <span class="stat-value">{{ template.download_count }}</span>
+                        <span class="stat-label">دانلود</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">{{ template.created_at.strftime('%Y/%m/%d') if template.created_at else '-' }}</span>
+                        <span class="stat-label">تاریخ انتشار</span>
+                    </div>
+                </div>
+
+                <a href="{{ url_for('public.download_template', slug=template.slug) }}" class="btn btn-primary btn-lg download-btn">
+                    ⬇ دانلود قالب (ZIP)
+                </a>
+            </div>
+        </div>
+
+        {% if related %}
+        <div class="related-section">
+            <h2>قالب‌های مرتبط</h2>
+            <div class="templates-grid">
+                {% for t in related %}
+                {% set template = t %}
+                {% include "partials/template_card.html" %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

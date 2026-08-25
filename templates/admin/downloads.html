@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+
+{% block title %}دانلودها{% endblock %}
+
+{% block content %}
+<h1 class="page-title">لیست دانلودها</h1>
+
+<div class="admin-card">
+    <table class="admin-table admin-table-full">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>قالب</th>
+                <th>IP</th>
+                <th>تاریخ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in downloads %}
+            <tr>
+                <td>{{ d.id }}</td>
+                <td>{{ d.template.name if d.template else 'حذف شده' }}</td>
+                <td dir="ltr">{{ d.ip_address or '-' }}</td>
+                <td>{{ d.downloaded_at.strftime('%Y/%m/%d %H:%M') if d.downloaded_at else '-' }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center">دانلودی ثبت نشده است.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

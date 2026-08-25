@@ -1,0 +1,67 @@
+{% extends "admin/base.html" %}
+
+{% block title %}داشبورد{% endblock %}
+
+{% block content %}
+<h1 class="page-title">داشبورد</h1>
+
+<div class="stats-grid">
+    <div class="stat-card-admin">
+        <div class="stat-icon">📁</div>
+        <div>
+            <span class="stat-value">{{ total_templates }}</span>
+            <span class="stat-label">قالب</span>
+        </div>
+    </div>
+    <div class="stat-card-admin">
+        <div class="stat-icon">⬇</div>
+        <div>
+            <span class="stat-value">{{ total_downloads }}</span>
+            <span class="stat-label">دانلود</span>
+        </div>
+    </div>
+    <div class="stat-card-admin">
+        <div class="stat-icon">🎫</div>
+        <div>
+            <span class="stat-value">{{ total_tickets }}</span>
+            <span class="stat-label">تیکت خوانده نشده</span>
+        </div>
+    </div>
+</div>
+
+<div class="admin-grid-2">
+    <div class="admin-card">
+        <h2>محبوب‌ترین قالب‌ها</h2>
+        <table class="admin-table">
+            <thead>
+                <tr><th>نام</th><th>دانلود</th></tr>
+            </thead>
+            <tbody>
+                {% for t in popular_templates %}
+                <tr><td>{{ t.name }}</td><td>{{ t.download_count }}</td></tr>
+                {% else %}
+                <tr><td colspan="2">داده‌ای وجود ندارد</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="admin-card">
+        <h2>آخرین دانلودها</h2>
+        <table class="admin-table">
+            <thead>
+                <tr><th>قالب</th><th>تاریخ</th></tr>
+            </thead>
+            <tbody>
+                {% for d in recent_downloads %}
+                <tr>
+                    <td>{{ d.template.name if d.template else '-' }}</td>
+                    <td>{{ d.downloaded_at.strftime('%Y/%m/%d %H:%M') if d.downloaded_at else '-' }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="2">دانلودی ثبت نشده</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
